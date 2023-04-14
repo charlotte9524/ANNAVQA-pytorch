@@ -181,37 +181,37 @@ if __name__ == "__main__":
         Info = scipy.io.loadmat(datainfo)
         dis_video_names = [''.join(Info['disNames'][i, 0]) for i in range(0, len(Info['disNames']), 3)]
         ref_video_names = [''.join(Info['refNames'][i, 0]) for i in range(0, len(Info['refNames']), 3)]
-        width = int(Info['resolution'][0][0])
-        height = int(Info['resolution'][0][1])
+        height = int(Info['resolution'][0][0])
+        width = int(Info['resolution'][0][1])
         dis_patch = 200
         patchSize = 224
         patchNum = 25
 
     position_width = []
     position_height = []
-    for w in range(0, width, dis_patch):
-        if w < width - patchSize + 1:
-            for h in range(0, height, dis_patch):
-                if h < height - patchSize:
+    for h in range(0, height, dis_patch):
+        if h < height - patchSize + 1:
+            for w in range(0, width, dis_patch):
+                if w < width - patchSize:
                     position_width.append(w)
                     position_height.append(h)
                 else:
-                    position_width.append(w)
-                    position_height.append(height - patchSize)
+                    position_height.append(h)
+                    position_width.append(width - patchSize)
                     break
         else:
-            for h in range(0, height, dis_patch):
-                if h < height - patchSize:
-                    position_width.append(width - patchSize)
-                    position_height.append(h)
-                else:
-                    position_width.append(width - patchSize)
+            for w in range(0, width, dis_patch):
+                if w < width - patchSize:
                     position_height.append(height - patchSize)
+                    position_width.append(w)
+                else:
+                    position_height.append(height - patchSize)
+                    position_width.append(width - patchSize)
                     break
             break
 
-    position = [position_width, position_height]
-    dis_dataset = VideoDataset(ref_videos_dir, dis_videos_dir, ref_video_names, dis_video_names, 'YUV420', width, height, position, SDInfo)
+    position = [position_height,position_width]
+    dis_dataset = VideoDataset(ref_videos_dir, dis_videos_dir, ref_video_names, dis_video_names, 'YUV420', height, width, position, SDInfo)
 
     for i in range(0, len(dis_dataset)):
         current_data = dis_dataset[i]
