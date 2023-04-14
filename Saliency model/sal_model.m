@@ -8,33 +8,34 @@ frameSkip = 2;
 patchSize = 224;
 position_width = [];
 position_height = [];
-for w = 1:200:resolution(1)
-    if w < resolution(1) - patchSize
-        for h = 1: 200: resolution(2)
-            if h < resolution(2) - patchSize + 1
+
+for h = 1:200:resolution(1)
+    if h < resolution(1) - patchSize
+        for w = 1: 200: resolution(2)
+            if w < resolution(2) - patchSize + 1
                 position_width = [position_width, w];
                 position_height = [position_height, h];
             else
-                position_width = [position_width, w];
-                position_height = [position_height, resolution(2) - patchSize + 1];
+                position_height = [position_height, h];
+                position_width = [position_width, resolution(2) - patchSize + 1];
                 break
             end
         end
     else
-        for h = 1: 200: resolution(2)
-            if h < resolution(2) - patchSize + 1
-                position_width = [position_width, resolution(1) - patchSize + 1];
-                position_height = [position_height, h];
+        for w = 1: 200: resolution(2)
+            if w < resolution(2) - patchSize + 1
+                position_height = [position_height, resolution(1) - patchSize + 1];
+                position_width = [position_width, w];
             else
-                position_width = [position_width, resolution(1) - patchSize + 1];
-                position_height = [position_height, resolution(2) - patchSize + 1];
+                position_height = [position_height, resolution(1) - patchSize + 1];
+                position_width = [position_width, resolution(2) - patchSize + 1];
                 break
             end
         end
         break
     end
 end
-position = int16([position_width; position_height]);
+position = int16([position_height; position_width]);
 
 sal_index = {};
 i = 0;
